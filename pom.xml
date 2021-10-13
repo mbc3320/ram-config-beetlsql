@@ -40,8 +40,8 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ram-bom.version>1.0.0-SNAPSHOT</ram-bom.version>
-        <ram-common.version>1.0.0-SNAPSHOT</ram-common.version>
+        <ram-bom.version>1.0.0</ram-bom.version>
+        <ram-common.version>1.0.0</ram-common.version>
         <beetlsql.version>3.10.1-RELEASE</beetlsql.version>
     </properties>
 
