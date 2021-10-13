@@ -23,18 +23,24 @@ public abstract class CRUDServiceImpl<D extends BaseDTO, T extends BaseEntity> i
 
     /**
      * get dao instance
-     * @return
+     * @return mapper instance
      */
     protected abstract BaseMapper<T> getDao();
 
     /**
      * get current pojo of database table
-     * @return
+     * @return model class
      */
     protected Class<T> currentModelClass() {
         return (Class<T>) getSuperClassGenericType(this.getClass(), 1);
     }
 
+    /**
+     * get class type by index
+     * @param clazz  super class
+     * @param index  class index
+     * @return       class type
+     */
     public static Class<?> getSuperClassGenericType(final Class<?> clazz, final int index) {
         Type genType = clazz.getGenericSuperclass();
         if (!(genType instanceof ParameterizedType)) {
@@ -86,8 +92,8 @@ public abstract class CRUDServiceImpl<D extends BaseDTO, T extends BaseEntity> i
     }
 
     /**
-     * 创建LambdaQuery
-     * @return
+     * create LambdaQuery
+     * @return lambdaQuery instance
      */
     protected LambdaQuery<T> createLambdaQuery() {
         return getDao().createLambdaQuery();

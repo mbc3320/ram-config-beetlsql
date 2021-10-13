@@ -1,7 +1,6 @@
 package top.beanshell.beetlsql.model.pojo;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 import org.beetl.sql.annotation.entity.AssignID;
 
 import java.io.Serializable;
@@ -31,6 +30,9 @@ public class BaseEntity implements Serializable {
     private Date updateTime;
 
 
+    /**
+     * init entity
+     */
     public void init() {
         if (null == createTime) {
             this.createTime = new Date();

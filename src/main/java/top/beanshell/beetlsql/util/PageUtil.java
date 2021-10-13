@@ -20,15 +20,16 @@ public final class PageUtil {
 
     /**
      * page result of database to dto
-     * @param page
-     * @param <T>
-     * @return
+     * @param page  page instance
+     * @param cls   dto class
+     * @param <D>   dto class
+     * @return      pageResultDTO instance
      */
-    public static <T extends Serializable> PageResultDTO<T> getPageResult(PageResult page, Class<T> cls) {
+    public static <D extends Serializable> PageResultDTO<D> getPageResult(PageResult page, Class<D> cls) {
 
         DefaultPageResult defaultPage = (DefaultPageResult) page;
 
-        PageResultDTO<T> pageResult = new PageResultDTO<>();
+        PageResultDTO<D> pageResult = new PageResultDTO<>();
 
         pageResult.setCurrent((int) defaultPage.getPage());
         pageResult.setPageSize(defaultPage.getPageSize());
@@ -36,9 +37,9 @@ public final class PageUtil {
         pageResult.setTotal(defaultPage.getTotalPage());
         pageResult.setTotal(defaultPage.getTotalRow());
 
-        List<T> resultList = new ArrayList<>();
+        List<D> resultList = new ArrayList<>();
         for (Object data : defaultPage.getList()) {
-            T result = BeanUtil.toBean(data, cls);
+            D result = BeanUtil.toBean(data, cls);
             resultList.add(result);
         }
         pageResult.setRecords(resultList);
