@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.beetl.sql.core.query.LambdaQuery;
 import org.beetl.sql.mapper.BaseMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import top.beanshell.beetlsql.model.pojo.BaseEntity;
 import top.beanshell.common.exception.BaseException;
 import top.beanshell.common.exception.code.GlobalStatusCode;
@@ -15,17 +16,17 @@ import java.lang.reflect.Type;
 import java.util.Date;
 
 /**
- * base service impl
+ * base dao service impl
  * @author binchao
  */
 @Slf4j
-public abstract class CRUDServiceImpl<D extends BaseDTO, T extends BaseEntity> implements ServiceI<D> {
+public abstract class CRUDDaoServiceImpl<D extends BaseDTO, T extends BaseEntity, M extends BaseMapper> implements ServiceI<D> {
 
     /**
      * get dao instance
-     * @return mapper instance
      */
-    protected abstract BaseMapper<T> getDao();
+    @Autowired
+    protected M baseMapper;
 
     /**
      * get current pojo of database table
@@ -66,7 +67,7 @@ public abstract class CRUDServiceImpl<D extends BaseDTO, T extends BaseEntity> i
     public boolean saveEntity(D dto) {
         T entity = BeanUtil.toBean(dto, currentModelClass());
         entity.init();
-        getDao().insert(entity);
+        baseMapper.insert(entity);
         return true;
     }
 
@@ -74,12 +75,12 @@ public abstract class CRUDServiceImpl<D extends BaseDTO, T extends BaseEntity> i
     public boolean updateEntityById(D dto) {
         T entity = BeanUtil.toBean(dto, currentModelClass());
         entity.setUpdateTime(new Date());
-        return getDao().updateTemplateById(entity) == 1;
+        return baseMapper.updateTemplateById(entity) == 1;
     }
 
     @Override
     public D getById(Long id) {
-        T entity = getDao().single(id);
+        T entity = (T) baseMapper.single(id);
         if (null == entity) {
             throw new BaseException(GlobalStatusCode.DATA_IS_NOT_EXIST);
         }
@@ -88,7 +89,7 @@ public abstract class CRUDServiceImpl<D extends BaseDTO, T extends BaseEntity> i
 
     @Override
     public boolean removeById(Long id) {
-        return getDao().deleteById(id) == 1 ;
+        return baseMapper.deleteById(id) == 1 ;
     }
 
     /**
@@ -96,6 +97,6 @@ public abstract class CRUDServiceImpl<D extends BaseDTO, T extends BaseEntity> i
      * @return lambdaQuery instance
      */
     protected LambdaQuery<T> createLambdaQuery() {
-        return getDao().createLambdaQuery();
+        return baseMapper.createLambdaQuery();
     }
 }
